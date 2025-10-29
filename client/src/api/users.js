@@ -1,20 +1,35 @@
 import { axiosInstance } from "./index";
-// register a new user
 
-export const RegisterUser = async (value) => {
+const handleRequestPost = async (url, data) => {
   try {
-    const res = await axiosInstance.post("/api/users/register", value);
+    const res = await axiosInstance.post(url, data);
     return res.data;
   } catch (error) {
-    console.log(error);
+    // Better error handling
+    console.error("API Error:", error.response?.data || error.message);
+    // Optional: throw for upper layers (like React toast handlers)
+    throw error.response?.data || { success: false, message: "Server Error" };
   }
 };
 
-export const LoginUser = async (value) => {
+const handleRequestGet = async (url, data) => {
   try {
-    const res = await axiosInstance.post("/api/users/login", value);
+    const res = await axiosInstance.get(url, data);
     return res.data;
   } catch (error) {
-    console.log(error);
+    // Better error handling
+    console.error("API Error:", error.response?.data || error.message);
+    // Optional: throw for upper layers (like React toast handlers)
+    throw error.response?.data || { success: false, message: "Server Error" };
   }
 };
+
+// ✅ Register a new user
+export const RegisterUser = (data) =>
+  handleRequestPost("/api/users/register", data);
+
+// ✅ Login user
+export const LoginUser = (data) => handleRequestPost("/api/users/login", data);
+
+export const GetCurrentUser = (data) =>
+  handleRequestGet("/api/users/current", data);

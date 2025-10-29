@@ -65,4 +65,10 @@ router.post("/login", async (req, res) => {
     });
   }
 });
+
+router.get("/current", async (req, res) => {
+  console.log(req.url, req.method);
+  console.log(req.headers["authorization"]);
+  res.send({ success: true, message: "User is authenticated" });
+});
 module.exports = router;
